@@ -22,5 +22,5 @@
     },
     "files": ["fantasy-environment.js", "src/*.js"],
     "main": "fantasy-environment.js",
-    "version": "0.0.1"
+    "version": "0.0.2"
 }

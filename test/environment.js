@@ -1,4 +1,4 @@
-var environment = require('../environment'),
+var environment = require('../fantasy-environment'),
     constant = function(a) {
         return function() {
             return a;
