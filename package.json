@@ -1,0 +1,26 @@
+{
+    "name": "fantasy-environment",
+    "description": "Environment library which is used by Fantasy World",
+    "author": "Simon Richardson <stickupkid@gmail.com> (https://github.com/SimonRichardson)",
+    "homepage": "https://github.com/SimonRichardson/fantasy-environment",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SimonRichardson/fantasy-environment.git"
+    },
+    "dependencies": {
+        "fantasy-helpers": "0.0.x"
+    },
+    "devDependencies": {
+        "grunt-cli": "0.1.9",
+        "grunt": "0.4.x",
+        "grunt-contrib-jshint": "0.6.x",
+        "grunt-contrib-nodeunit": "0.2.0"
+    },
+    "scripts": {
+        "test": "grunt"
+    },
+    "files": ["fantasy-environment.js", "src/*.js"],
+    "main": "fantasy-environment.js",
+    "version": "0.0.1"
+}
