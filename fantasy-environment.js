@@ -1,3 +1,3 @@
-var env = require('./src/environment');
+const env = require('./src/environment');
 
-exports = module.exports = env;
+module.exports = env;

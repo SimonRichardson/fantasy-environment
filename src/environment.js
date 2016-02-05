@@ -1,8 +1,6 @@
-var helpers = require('fantasy-helpers'),
-    create = helpers.create,
-    extend = helpers.extend,
-    singleton = helpers.singleton,
-    getInstance = helpers.getInstance;
+'use strict';
+
+const {extend, singleton, getInstance} = require('fantasy-helpers');
 
 //   # Environment
 //
@@ -63,10 +61,7 @@ var helpers = require('fantasy-helpers'),
 //       env.name === 'Squishy';
 //
 function findRegistered(name, registrations, args) {
-    var i,
-        total;
-
-    for(i = 0, total = registrations.length; i < total; i++) {
+    for(let i = 0, total = registrations.length; i < total; i++) {
         if(registrations[i].predicate.apply(this, args))
             return registrations[i].f;
     }
@@ -76,7 +71,7 @@ function findRegistered(name, registrations, args) {
 
 function makeMethod(name, registrations) {
     return function() {
-        var args = [].slice.call(arguments);
+        const args = [].slice.call(arguments);
         return findRegistered(name, registrations, args).apply(this, args);
     };
 }
@@ -90,60 +85,58 @@ function makeMethod(name, registrations) {
 //   * `envAppend(e)` - combines two environments, biased to `e`
 //
 function environment(methods, properties) {
-    var self = this instanceof environment && !this.method && !this.property ? this : create(environment.prototype),
-        method;
+    const self = this instanceof environment && !this.method && !this.property ? this : Object.create(environment.prototype);
 
-    methods = methods || {};
-    properties = properties || {};
+    let methodsʹ = methods || {};
+    let propertiesʹ = properties || {};
 
     self.method = function(name, predicate, f) {
-        if(properties[name]) throw new Error("Method `" + name + "` is already in environment.");
+        if(propertiesʹ[name]) throw new Error("Method `" + name + "` is already in environment.");
 
-        var newMethods = extend(methods, singleton(name, (methods[name] || []).concat({
+        const newMethods = extend(methodsʹ, singleton(name, (methodsʹ[name] || []).concat({
             predicate: predicate,
             f: f
         })));
-        return environment(newMethods, properties);
+        return environment(newMethods, propertiesʹ);
     };
 
     self.property = function(name, value) {
-        var newProperties = extend(properties, singleton(name, value));
-        return environment(methods, newProperties);
+        const newProperties = extend(propertiesʹ, singleton(name, value));
+        return environment(methodsʹ, newProperties);
     };
 
     self.envConcat = function(extraMethods, extraProperties) {
-        var newMethods = {},
-            possibleMethods;
-
-        for(var i in methods) {
-            possibleMethods = extraMethods[i] || [];
-            newMethods[i] = methods[i].concat(possibleMethods);
+        const newMethods = {};
+            
+        for(let i in methodsʹ) {
+            let possibleMethods = extraMethods[i] || [];
+            newMethods[i] = methodsʹ[i].concat(possibleMethods);
         }
-        for(var j in extraMethods) {
+        for(let j in extraMethods) {
             if(j in newMethods) continue;
             newMethods[j] = extraMethods[j];
         }
 
         return environment(
             newMethods,
-            extend(properties, extraProperties)
+            extend(propertiesʹ, extraProperties)
         );
     };
 
     self.envAppend = function(e) {
-        return e.envConcat(methods, properties);
+        return e.envConcat(methodsʹ, propertiesʹ);
     };
 
-    for(var i in methods) {
+    for(let i in methodsʹ) {
         /* Make sure the methods are names */
-        method = makeMethod(i, methods[i]);
+        let method = makeMethod(i, methodsʹ[i]);
         method._name = i;
         self[i] = method;
     }
 
-    for(var j in properties) {
+    for(let j in propertiesʹ) {
         if(self[j]) throw new Error("Property `" + j + "` is already in environment.");
-        else self[j] = properties[j];
+        else self[j] = propertiesʹ[j];
     }
 
     return self;

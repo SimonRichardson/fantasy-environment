@@ -9,16 +9,14 @@
         "url": "https://github.com/SimonRichardson/fantasy-environment.git"
     },
     "dependencies": {
-        "fantasy-helpers": "0.0.x"
+        "fantasy-helpers": "git+https://github.com/fantasyland/fantasy-helpers.git"
     },
     "devDependencies": {
-        "grunt-cli": "0.1.9",
-        "grunt": "0.4.x",
-        "grunt-contrib-jshint": "0.6.x",
-        "grunt-contrib-nodeunit": "0.2.0"
+        "nodeunit": "0.9.x",
+        "fantasy-combinators": "0.x.x"
     },
     "scripts": {
-        "test": "grunt"
+      "test": "node --harmony_destructuring node_modules/.bin/nodeunit test/*.js"
     },
     "files": ["fantasy-environment.js", "src/*.js"],
     "main": "fantasy-environment.js",
